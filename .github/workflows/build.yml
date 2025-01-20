@@ -226,6 +226,6 @@ jobs:
           allowUpdates: true
           makeLatest: true
           removeArtifacts: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           tag: nightly-build
           artifacts: pkg/*
