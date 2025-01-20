@@ -179,6 +179,7 @@ jobs:
           sudo apt-get -y install hashdeep
       - name: Creating new artifacts and update nightly-build
         run: |
+          REPO="${PWD##*/}"
           mkdir pkg
           cd binaries
           for BIN in *; do
@@ -205,12 +206,12 @@ jobs:
           echo ""
           for ZIP in *; do
             ls -gG ${ZIP}
-            tigerdeep -lz ${ZIP} >> ../angrylion-rdp-plus.tiger.txt
-            sha256sum ${ZIP} >> ../angrylion-rdp-plus.sha256.txt
-            sha512sum ${ZIP} >> ../angrylion-rdp-plus.sha512.txt
-            b2sum ${ZIP} >> ../angrylion-rdp-plus.blake2.txt
+            tigerdeep -lz ${ZIP} >> ../${REPO}.tiger.txt
+            sha256sum ${ZIP} >> ../${REPO}.sha256.txt
+            sha512sum ${ZIP} >> ../${REPO}.sha512.txt
+            b2sum ${ZIP} >> ../${REPO}.blake2.txt
           done
-          mv ../angrylion-rdp-plus.*.txt .
+          mv ../${REPO}.*.txt .
           echo ""
           for HASH in tiger sha256 sha512 blake2; do
             echo "${HASH}:" | tr [a-z] [A-Z]
@@ -224,8 +225,7 @@ jobs:
         with:
           prerelease: true
           allowUpdates: true
-          makeLatest: true
           removeArtifacts: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           tag: nightly-build
           artifacts: pkg/*
